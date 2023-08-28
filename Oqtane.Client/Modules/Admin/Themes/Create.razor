@@ -102,8 +102,7 @@
         {
             if (IsValid(_owner) && IsValid(_theme) && _owner != _theme && _template != "-")
             {
-                var template = _templates.FirstOrDefault(item => item.Name == _template);
-                var theme = new Theme { Owner = _owner, Name = _theme, Template = _template, Version = _reference, ThemeName = template.Namespace };
+                var theme = new Theme { Owner = _owner, Name = _theme, Template = _template, Version = _reference };
                 theme = await ThemeService.CreateThemeAsync(theme);
                 GetLocation();
                 AddModuleMessage(string.Format(Localizer["Success.Theme.Create"], NavigateUrl("admin/system")), MessageType.Success);
@@ -143,14 +142,8 @@
         if (_owner != "" && _theme != "" && _template != "-")
         {
             var template = _templates.FirstOrDefault(item => item.Name == _template);
-            if (!string.IsNullOrEmpty(template.Namespace))
-            {
-                _location = template.Location + template.Namespace.Replace("[Owner]", _owner).Replace("[Theme]", _theme);
-            }
-            else
-            {
-                _location = template.Location + _owner + ".Theme." + _theme;
-            }
+            _location = template.Location + _owner + ".Theme." + _theme;
+
         }
         StateHasChanged();
     }
